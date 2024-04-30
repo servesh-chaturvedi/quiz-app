@@ -5,7 +5,8 @@ const getAllQuestions = async (req, res) => {
   try {
     const questions = await Question.find().lean()
     const questionsWithRandomizedOptions = questions.map((question) => ({
-      ...question,
+      id: question._id,
+      question: question.question,
       options: shuffleArray(question.options),
     }))
     res.json(questionsWithRandomizedOptions)

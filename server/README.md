@@ -11,27 +11,28 @@ GET /questions
 Retrieves all questions with randomized options.
 
 Example **Response**:
+
 ```json
 [
   {
-    "_id": "question1Id",
+    "id": "question1Id",
     "question": "What is the capital of France?",
-    "options": ["Paris", "Berlin", "London", "Rome"],
-    "correctAnswer": "Paris"
+    "options": ["London", "Rome", "Berlin", "Paris"]
   },
   {
-    "_id": "question2Id",
+    "id": "question2Id",
     "question": "What is 2 + 2?",
-    "options": ["3", "4", "5", "6"],
-    "correctAnswer": "4"
+    "options": ["3", "4", "5", "6"]
   }
 ]
 ```
 
 ### Create a new question
+
 POST /questions
 
 Example **Request Body**:
+
 ```json
 {
   "question": "What is the capital of France?",
@@ -41,9 +42,11 @@ Example **Request Body**:
 ```
 
 ### Update a question
+
 PUT /questions/:id
 
 Example **Request Body**:
+
 ```json
 {
   "question": "What is the capital of France?",
@@ -53,9 +56,11 @@ Example **Request Body**:
 ```
 
 ### DELETE a question
+
 DELETE /questions/:id
 
 ### Validate answers
+
 POST /questions/validate
 
 Example **Request Body**:
@@ -68,6 +73,7 @@ Example **Request Body**:
 ```
 
 Example **Response**
+
 ```json
 [
   {
