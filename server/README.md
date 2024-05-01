@@ -2,6 +2,19 @@
 
 This API allows you to manage multiple-choice questions (MCQs) for quizzes. You can create, retrieve, update, delete questions, and validate answers.
 
+## Getting started
+
+Create a `.env` file in server directory and set an environment variable `DATABASE_URI=<mongo db url>`
+
+Run the development server:
+
+```bash
+npm i
+npm run dev
+```
+
+Create a few questions using the post question api as described in next section.
+
 ## API Endpoints
 
 ### Get all questions
