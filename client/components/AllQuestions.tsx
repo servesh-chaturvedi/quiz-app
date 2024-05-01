@@ -9,6 +9,7 @@ type Answer = {
 
 export default function AllQuestions({ questions }: { questions: Question[] }) {
   const [answers, setAnswers] = useState<{ [key: string]: string }>({})
+  const [result, setResult] = useState<Answer[]>([])
   const [correct, setCorrect] = useState(0)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const handleAnswerChange = (questionId: string, answer: string) => {
@@ -26,9 +27,10 @@ export default function AllQuestions({ questions }: { questions: Question[] }) {
         'Content-Type': 'application/json',
       },
     })
-    const result: Answer[] = await res.json()
+    const fetchedResults: Answer[] = await res.json()
+    setResult(fetchedResults)
 
-    const correctAnswers = result.reduce((acc, answer) => {
+    const correctAnswers = fetchedResults.reduce((acc, answer) => {
       if (answer.isCorrect) {
         acc++
       }
@@ -40,7 +42,7 @@ export default function AllQuestions({ questions }: { questions: Question[] }) {
 
   return (
     <>
-      <div className="container md:max-w-md mx-auto">
+      <div className="container md:max-w-[20rem] mx-auto">
         <h1 className="text-3xl font-bold my-8">Quiz</h1>
         {questions.map((question) => (
           <SingleQuestion
@@ -48,6 +50,7 @@ export default function AllQuestions({ questions }: { questions: Question[] }) {
             question={question}
             answers={answers}
             setAnswer={handleAnswerChange}
+            result={result}
           />
         ))}
         <button
@@ -61,6 +64,7 @@ export default function AllQuestions({ questions }: { questions: Question[] }) {
             setAnswers({})
             setIsSubmitted(false)
             setCorrect(0)
+            setResult([])
           }}
           className="mx-2 hover:bg-red-400 text-white font-bold py-2 px-4 rounded my-4"
         >
@@ -81,16 +85,30 @@ function SingleQuestion({
   question,
   answers,
   setAnswer,
+  result,
 }: {
   question: Question
   answers: { [key: string]: string }
   setAnswer: (questionId: string, answer: string) => void
+  result: Answer[]
 }) {
+  const answerResult = result.find((ans) => ans.questionId === question.id)
+  const isCorrect = answerResult ? answerResult.isCorrect : null
+
   return (
     <div key={question.id} className="my-8">
       <p className="font-bold">{question.question}</p>
       {question.options.map((option) => (
-        <label key={option} className="block my-2">
+        <label
+          key={option}
+          className={`p-1 block my-2 border border-transparent has-[:checked]:border-blue-200 ${
+            isCorrect === null
+              ? ''
+              : isCorrect
+              ? 'has-[:checked]:border-green-400'
+              : 'has-[:checked]:border-red-400'
+          }`}
+        >
           <input
             type="radio"
             name={question.id}
